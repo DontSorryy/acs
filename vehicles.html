@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Транспорт</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #121218;
+            --bg-card: #1E1E2A;
+            --bg-hover: #2A2A3A;
+            --accent-primary: #00C2FF;
+            --accent-secondary: #7B61FF;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0C0;
+            --text-tertiary: #6A6A8A;
+            --border-light: rgba(255, 255, 255, 0.08);
+            --border-dark: rgba(0, 0, 0, 0.2);
+            --price: #FFD700;
+            --source-high: #ff4d4d;       /* Высокий класс */
+            --source-mid: #4c8bf5;        /* Средний класс */
+            --source-low: #1db954;        /* Низкий класс */
+            --source-bike: #a335ee;       /* Мото класс */
+            --source-bp: #ff8000;        /* Black Pass */
+            --source-calendar: #f9ca24;  /* Календарь */
+            --source-unique: #e056fd;     /* Уникальный */
+            --source-water: #00cec9;      /* Водный */
+            --source-craft: #6c5ce7;      /* Крафт */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+        .app-container {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            min-height: 100vh;
+        }
+        .app-header {
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-light);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .logo-icon {
+            color: var(--accent-primary);
+            font-size: 20px;
+        }
+        .main-content {
+            padding: 24px;
+            max-width: 1440px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 16px;
+        }
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .page-title-icon {
+            color: var(--accent-primary);
+        }
+        .actions-group {
+            display: flex;
+            gap: 12px;
+        }
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            outline: none;
+        }
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
+        }
+        .btn-secondary:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-primary);
+        }
+        .search-filter-container {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-direction: column;
+        }
+        .search-box {
+            flex: 1;
+            position: relative;
+            width: 100%;
+        }
+        .search-input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all var(--transition-fast);
+        }
+        .search-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 2px rgba(0, 194, 255, 0.2);
+        }
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+        }
+        .filter-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .filter-tag {
+            padding: 8px 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+        .filter-tag:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+        .filter-tag.active {
+            background: rgba(0, 194, 255, 0.1);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+        .filter-tag::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-primary);
+            transform: scaleX(0);
+            transition: transform var(--transition-fast);
+            transform-origin: left;
+        }
+        .filter-tag.active::after {
+            transform: scaleX(1);
+        }
+        .filter-tag[data-filter="high"]::after {
+            background: var(--source-high);
+        }
+        .filter-tag[data-filter="mid"]::after {
+            background: var(--source-mid);
+        }
+        .filter-tag[data-filter="low"]::after {
+            background: var(--source-low);
+        }
+        .filter-tag[data-filter="bike"]::after {
+            background: var(--source-bike);
+        }
+        .filter-tag[data-filter="bp"]::after {
+            background: var(--source-bp);
+        }
+        .filter-tag[data-filter="calendar"]::after {
+            background: var(--source-calendar);
+        }
+        .filter-tag[data-filter="unique"]::after {
+            background: var(--source-unique);
+        }
+        .filter-tag[data-filter="water"]::after {
+            background: var(--source-water);
+        }
+        .filter-tag[data-filter="craft"]::after {
+            background: var(--source-craft);
+        }
+        .filter-tag.active[data-filter="high"] {
+            color: var(--source-high);
+            border-color: var(--source-high);
+            background: rgba(255, 77, 77, 0.1);
+        }
+        .filter-tag.active[data-filter="mid"] {
+            color: var(--source-mid);
+            border-color: var(--source-mid);
+            background: rgba(76, 139, 245, 0.1);
+        }
+        .filter-tag.active[data-filter="low"] {
+            color: var(--source-low);
+            border-color: var(--source-low);
+            background: rgba(29, 185, 84, 0.1);
+        }
+        .filter-tag.active[data-filter="bike"] {
+            color: var(--source-bike);
+            border-color: var(--source-bike);
+            background: rgba(163, 53, 238, 0.1);
+        }
+        .filter-tag.active[data-filter="bp"] {
+            color: var(--source-bp);
+            border-color: var(--source-bp);
+            background: rgba(255, 128, 0, 0.1);
+        }
+        .filter-tag.active[data-filter="calendar"] {
+            color: var(--source-calendar);
+            border-color: var(--source-calendar);
+            background: rgba(249, 202, 36, 0.1);
+        }
+        .filter-tag.active[data-filter="unique"] {
+            color: var(--source-unique);
+            border-color: var(--source-unique);
+            background: rgba(224, 86, 253, 0.1);
+        }
+        .filter-tag.active[data-filter="water"] {
+            color: var(--source-water);
+            border-color: var(--source-water);
+            background: rgba(0, 206, 201, 0.1);
+        }
+        .filter-tag.active[data-filter="craft"] {
+            color: var(--source-craft);
+            border-color: var(--source-craft);
+            background: rgba(108, 92, 231, 0.1);
+        }
+        .vehicles-grid-container {
+            background: var(--bg-card);
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+        .vehicles-grid-wrapper {
+            width: 100%;
+            max-height: calc(100vh - 220px);
+            overflow-y: auto;
+            padding: 16px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            transition: all var(--transition-normal);
+        }
+        .vehicle-card {
+            background: var(--bg-dark);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all var(--transition-fast);
+            border: 1px solid var(--border-light);
+            position: relative;
+        }
+        .vehicle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-primary);
+        }
+        .vehicle-img-container {
+            width: 100%;
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg-card);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .vehicle-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform var(--transition-normal);
+            background-color: var(--bg-card);
+        }
+        
+        
+        .no-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+        .vehicle-info {
+            padding: 14px;
+        }
+        .vehicle-name {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .vehicle-id {
+            font-size: 13px;
+            color: var(--accent-primary);
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+        .vehicle-details {
+            font-size: 13px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+        }
+        .vehicle-details i {
+            color: var(--accent-primary);
+            width: 16px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .vehicle-price {
+            color: var(--price);
+            font-weight: 500;
+        }
+        .vehicle-source {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+        .vehicle-source::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .vehicle-source:hover::after {
+            transform: translateX(100%);
+        }
+        .source-high { 
+            background-color: var(--source-high);
+            box-shadow: 0 2px 8px rgba(255, 77, 77, 0.4);
+        }
+        .source-mid { 
+            background-color: var(--source-mid);
+            box-shadow: 0 2px 8px rgba(76, 139, 245, 0.4);
+        }
+        .source-low { 
+            background-color: var(--source-low);
+            box-shadow: 0 2px 8px rgba(29, 185, 84, 0.4);
+        }
+        .source-bike { 
+            background-color: var(--source-bike);
+            box-shadow: 0 2px 8px rgba(163, 53, 238, 0.4);
+        }
+        .source-bp { 
+            background-color: var(--source-bp);
+            box-shadow: 0 2px 8px rgba(255, 128, 0, 0.4);
+        }
+        .source-calendar { 
+            background-color: var(--source-calendar);
+            box-shadow: 0 2px 8px rgba(249, 202, 36, 0.4);
+        }
+        .source-unique { 
+            background-color: var(--source-unique);
+            box-shadow: 0 2px 8px rgba(224, 86, 253, 0.4);
+        }
+        .source-water { 
+            background-color: var(--source-water);
+            box-shadow: 0 2px 8px rgba(0, 206, 201, 0.4);
+        }
+        .source-craft { 
+            background-color: var(--source-craft);
+            box-shadow: 0 2px 8px rgba(108, 92, 231, 0.4);
+        }
+        .additional-info {
+            display: none;
+            padding: 10px;
+            margin-top: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            font-size: 13px;
+            border-left: 3px solid var(--accent-primary);
+            color: var(--text-secondary);
+        }
+        .toggle-info {
+            color: var(--accent-primary);
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: color var(--transition-fast);
+        }
+        .toggle-info:hover {
+            color: var(--text-primary);
+        }
+        .toggle-info i {
+            font-size: 10px;
+            transition: transform var(--transition-fast);
+        }
+        .toggle-info.active i {
+            transform: rotate(180deg);
+        }
+        .loading-indicator {
+            padding: 20px;
+            text-align: center;
+            color: var(--text-tertiary);
+            display: none;
+        }
+        .loading-indicator.visible {
+            display: block;
+        }
+        .loading-spinner {
+            border: 2px solid var(--text-tertiary);
+            border-top: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        .highlighted {
+            animation: pulse 2s infinite;
+            border: 2px solid var(--accent-primary);
+        }
+        .app-footer {
+            padding: 16px 24px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-tertiary);
+            border-top: 1px solid var(--border-light);
+        }
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+            animation: fadeIn 0.3s;
+        }
+        .modal-content {
+            display: block;
+            margin: auto;
+            max-width: 90%;
+            max-height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid var(--accent-primary);
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0, 194, 255, 0.5);
+            animation: zoomIn 0.3s;
+        }
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: var(--accent-primary);
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .close:hover {
+            color: var(--text-primary);
+            transform: rotate(90deg);
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes zoomIn {
+            from { transform: translate(-50%, -50%) scale(0.9); }
+            to { transform: translate(-50%, -50%) scale(1); }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 194, 255, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 194, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 194, 255, 0); }
+        }
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .vehicles-grid-wrapper {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+        @media (max-width: 768px) {
+            .app-header {
+                padding: 0 16px;
+            }
+            .main-content {
+                padding: 16px;
+            }
+            .toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .actions-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .vehicles-grid-wrapper {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 12px;
+            }
+            .vehicle-img-container {
+                height: 160px;
+            }
+            .modal-content {
+                max-width: 95%;
+                max-height: 80%;
+            }
+            .close {
+                font-size: 30px;
+                top: 15px;
+                right: 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 20px;
+            }
+            .filter-tag {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            .btn {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+            .vehicles-grid-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .vehicle-img-container {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <a href="index.html" class="logo">
+                <i class="fas fa-database logo-icon"></i>
+                <span>Black Russia</span>
+            </a>
+        </header>
+        <main class="main-content">
+            <div class="toolbar">
+                <h1 class="page-title">
+                    <i class="fas fa-car-alt page-title-icon"></i>
+                    <span>Транспорт</span>
+                </h1>
+                <div class="actions-group">
+                    <a href="index.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i>
+                        Назад
+                    </a>
+                </div>
+            </div>
+            <div class="search-filter-container">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Поиск по ID, названию" id="vehicle-search">
+                </div>
+                <div class="filter-group" id="filter-group">
+                    <div class="filter-tag active" data-filter="all">
+                        <span>Все</span>
+                    </div>
+                    <div class="filter-tag" data-filter="high">
+                        <span>Высокий класс</span>
+                    </div>
+                    <div class="filter-tag" data-filter="mid">
+                        <span>Средний класс</span>
+                    </div>
+                    <div class="filter-tag" data-filter="low">
+                        <span>Низкий класс</span>
+                    </div>
+                    <div class="filter-tag" data-filter="bike">
+                        <span>Мото класс</span>
+                    </div>
+                    <div class="filter-tag" data-filter="bp">
+                        <span>Black Pass</span>
+                    </div>
+                    <div class="filter-tag" data-filter="calendar">
+                        <span>Календарь</span>
+                    </div>
+                    <div class="filter-tag" data-filter="unique">
+                        <span>Уникальный</span>
+                    </div>
+                    <div class="filter-tag" data-filter="water">
+                        <span>Водный</span>
+                    </div>
+                    <div class="filter-tag" data-filter="craft">
+                        <span>Крафт</span>
+                    </div>
+                </div>
+            </div>
+            <div class="vehicles-grid-container">
+                <div class="vehicles-grid-wrapper" id="vehicles-container">
+                    <!-- Транспорт будет загружен через JavaScript -->
+                </div>
+                <div class="loading-indicator" id="loading-indicator">
+                    <div class="loading-spinner"></div>
+                    <p>Загрузка транспорта...</p>
+                </div>
+            </div>
+        </main>
+        <footer class="app-footer">
+            <p>Все права защищены.😁</p>
+        </footer>
+    </div>
+    <!-- Модальное окно для увеличения фото -->
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+    <script>
+        class VehiclesApp {
+            constructor() {
+                this.allVehicles = [];
+                this.displayedVehicles = [];
+                this.filteredVehicles = [];
+                this.currentFilters = {
+                    type: 'all',
+                    search: ''
+                };
+                this.batchSize = 10;
+                this.currentBatch = 0;
+                this.isLoading = false;
+                this.hasMoreData = true;
+                
+                this.init();
+            }
+            
+            init() {
+                this.initElements();
+                this.initEvents();
+                
+                this.loadInitialData();
+            }
+            
+            initElements() {
+                this.elements = {
+                    searchInput: document.getElementById('vehicle-search'),
+                    filterTags: document.querySelectorAll('#filter-group .filter-tag'),
+                    vehiclesContainer: document.getElementById('vehicles-container'),
+                    loadingIndicator: document.getElementById('loading-indicator'),
+                    modal: document.getElementById('imageModal'),
+                    modalImg: document.getElementById('modalImage'),
+                    closeBtn: document.querySelector('.close')
+                };
+            }
+            
+            initEvents() {
+                // Поиск
+                this.elements.searchInput.addEventListener('input', () => {
+                    this.currentFilters.search = this.elements.searchInput.value.trim();
+                    this.resetAndFilterData();
+                });
+                
+                // Фильтры
+                this.elements.filterTags.forEach(tag => {
+                    tag.addEventListener('click', () => {
+                        const filter = tag.dataset.filter;
+                        this.currentFilters.type = filter;
+                        this.elements.filterTags.forEach(t => t.classList.remove('active'));
+                        tag.classList.add('active');
+                        this.resetAndFilterData();
+                    });
+                });
+                
+                // Модальное окно
+                this.elements.closeBtn.onclick = () => this.closeModal();
+                this.elements.modal.onclick = (e) => {
+                    if (e.target === this.elements.modal) this.closeModal();
+                };
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === "Escape" && this.elements.modal.style.display === "block") {
+                        this.closeModal();
+                    }
+                });
+            }
+            
+            
+            
+            loadInitialData() {
+                // Пример данных (можно заменить на реальные данные)
+                this.allVehicles = [
+                    { 
+                        id: 1,
+                        name: "Lamborghini Aventador",
+                        shopName: "Автосалон",
+                        price: "100 ГАЛДЫЫЫЫ",
+                        donatePrice: "",
+                        image: "car/lamb.jpg",
+                        source: "high",
+                        additionalInfo: "похожа на трактор"
+                    },
+                    { 
+                        id: 2,
+                        name: "Лада приора",
+                        shopName: "",
+                        price: "5.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000",
+                        donatePrice: "",
+                        image: "car/lada.webp",
+                        source: "mid",
+                        additionalInfo: "тонированая"
+                    },
+                    { 
+                        id: 3,
+                        name: "Велик",
+                        shopName: "Мотосалон",
+                        price: "3.500.000",
+                        donatePrice: "",
+                        image: "car/velik.webp",
+                        source: "bike",
+                        additionalInfo: ""
+                    },
+
+                ];
+            
+                this.resetAndFilterData();
+            }
+            
+            resetAndFilterData() {
+                this.currentBatch = 0;
+                this.displayedVehicles = [];
+                this.hasMoreData = true;
+                this.filterData();
+            }
+
+            filterData() {
+                // Фильтрация по типу
+                this.filteredVehicles = this.allVehicles.filter(vehicle => {
+                    if (this.currentFilters.type === 'all') return true;
+                    return vehicle.source === this.currentFilters.type;
+                });
+
+                // Фильтрация по поиску
+                if (this.currentFilters.search) {
+                    const searchLower = this.currentFilters.search.toLowerCase();
+                    this.filteredVehicles = this.filteredVehicles.filter(vehicle => {
+                        return (
+                            (vehicle.name && vehicle.name.toLowerCase().includes(searchLower)) ||
+                            (vehicle.id.toString().includes(searchLower)) ||
+                            (vehicle.shopName && vehicle.shopName.toLowerCase().includes(searchLower))
+                        );
+                    });
+                }
+
+                this.loadNextBatch();
+            }
+            
+            loadNextBatch() {
+                if (this.isLoading || !this.hasMoreData) return;
+                
+                this.isLoading = true;
+                this.elements.loadingIndicator.classList.add('visible');
+                
+                setTimeout(() => {
+                    const start = this.currentBatch * this.batchSize;
+                    const end = start + this.batchSize;
+                    const batch = this.filteredVehicles.slice(start, end);
+                    
+                    this.displayedVehicles = [...this.displayedVehicles, ...batch];
+                    this.currentBatch++;
+                    
+                    this.hasMoreData = end < this.filteredVehicles.length;
+                    this.renderVehicles(batch);
+                    
+                    this.isLoading = false;
+                    this.elements.loadingIndicator.classList.remove('visible');
+                }, 300);
+            }
+            
+            renderVehicles(batch) {
+                if (this.currentBatch === 1) {
+                    this.elements.vehiclesContainer.innerHTML = '';
+                }
+                
+                batch.forEach(vehicle => {
+                    const card = document.createElement('div');
+                    card.className = 'vehicle-card';
+                    
+                    // Изображение с ленивой загрузкой
+                    const imgHtml = vehicle.image ? 
+                        `<img src="${vehicle.image}" loading="lazy" alt="${vehicle.name}" class="vehicle-img">` : 
+                        `<div class="no-image">Нет изображения</div>`;
+                    
+                    // Основная информация
+                    let html = `
+                        <div class="vehicle-img-container">
+                            ${imgHtml}
+                        </div>
+                        <div class="vehicle-info">
+                            <h3 class="vehicle-name" title="${vehicle.name || 'Без названия'}">${vehicle.name || `Без названия (ID: ${vehicle.id})`}</h3>
+                            <div class="vehicle-id">ID: ${vehicle.id}</div>
+                    `;
+                    
+                    // Название в магазине
+                    if (vehicle.shopName && vehicle.shopName.trim() !== '') {
+                        html += `
+                            <div class="vehicle-details">
+                                <i class="fas fa-store"></i>
+                                <span title="${vehicle.shopName}">${vehicle.shopName}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    // Цена в обычном магазине
+                    if (vehicle.price && vehicle.price.trim() !== '') {
+                        html += `
+                            <div class="vehicle-details">
+                                <i class="fas fa-coins"></i>
+                                <span class="vehicle-price">${vehicle.price}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    // Цена в донат магазине
+                    if (vehicle.donatePrice && vehicle.donatePrice.trim() !== '') {
+                        html += `
+                            <div class="vehicle-details">
+                                <i class="fas fa-gem"></i>
+                                <span class="vehicle-price">${vehicle.donatePrice}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    // Источник
+                    if (vehicle.source) {
+                        const sourceClass = `source-${vehicle.source}`;
+                        html += `
+                            <div class="vehicle-source ${sourceClass}">
+                                ${this.getSourceName(vehicle.source)}
+                            </div>
+                        `;
+                    }
+                    
+                    // Дополнительная информация
+                    if (vehicle.additionalInfo && vehicle.additionalInfo.trim() !== '') {
+                        html += `
+                            <div class="toggle-info" onclick="vehiclesApp.toggleAdditionalInfo(this)">
+                                <i class="fas fa-chevron-down"></i> Описание
+                            </div>
+                            <div class="additional-info">
+                                ${vehicle.additionalInfo}
+                            </div>
+                        `;
+                    }
+                    
+                    html += `</div>`; // закрываем vehicle-info
+                    card.innerHTML = html;
+                    
+                    // Добавляем обработчик для модального окна
+                    const imgContainer = card.querySelector('.vehicle-img-container');
+                    if (imgContainer) {
+                        imgContainer.addEventListener('click', () => {
+                            if (vehicle.image) {
+                                this.openModal(vehicle.image);
+                            }
+                        });
+                    }
+                    
+                    this.elements.vehiclesContainer.appendChild(card);
+                    
+                    // Наблюдаем за изображениями для ленивой загрузки
+                    const img = card.querySelector('img');
+                    if (img) {
+                        
+                    }
+                });
+                
+                // Обновляем последний видимый элемент для подгрузки
+                this.updateLastVisibleElement();
+                
+                // Подсветка результатов поиска
+                if (this.currentFilters.search) {
+                    this.highlightSearchResults(this.currentFilters.search);
+                }
+            }
+            
+            updateLastVisibleElement() {
+                const cards = this.elements.vehiclesContainer.querySelectorAll('.vehicle-card');
+                if (cards.length > 0) {
+                    this.lastVisibleElement = cards[cards.length - 1];
+                    
+                }
+            }
+            
+            getSourceName(source) {
+                switch(source) {
+                    case 'high': return 'ВЫСОКИЙ КЛАСС';
+                    case 'mid': return 'СРЕДНИЙ КЛАСС';
+                    case 'low': return 'НИЗКИЙ КЛАСС';
+                    case 'bike': return 'МОТО КЛАСС';
+                    case 'bp': return 'BLACK PASS';
+                    case 'calendar': return 'КАЛЕНДАРЬ';
+                    case 'unique': return 'УНИКАЛЬНЫЙ';
+                    case 'water': return 'ВОДНЫЙ';
+                    case 'craft': return 'КРАФТ';
+                    default: return '';
+                }
+            }
+            
+            toggleAdditionalInfo(element) {
+                const info = element.nextElementSibling;
+                const icon = element.querySelector('i');
+                
+                if (info.style.display === 'block') {
+                    info.style.display = 'none';
+                    element.classList.remove('active');
+                } else {
+                    info.style.display = 'block';
+                    element.classList.add('active');
+                }
+            }
+            
+            highlightSearchResults(query) {
+                const cards = this.elements.vehiclesContainer.querySelectorAll('.vehicle-card');
+                const lowerQuery = query.toLowerCase();
+                
+                cards.forEach(card => {
+                    card.classList.remove('highlighted');
+                    
+                    const vehicleName = card.querySelector('.vehicle-name')?.textContent.toLowerCase() || '';
+                    const vehicleId = card.querySelector('.vehicle-id').textContent.toLowerCase();
+                    const vehicleShopName = card.querySelector('.vehicle-details:nth-of-type(1) span')?.textContent.toLowerCase() || '';
+                    
+                    if (vehicleName.includes(lowerQuery) || 
+                        vehicleId.includes(lowerQuery) || 
+                        vehicleShopName.includes(lowerQuery)) {
+                        card.classList.add('highlighted');
+                    }
+                });
+            }
+            
+            openModal(imgSrc) {
+                this.elements.modalImg.src = imgSrc;
+                this.elements.modal.style.display = "block";
+                document.body.style.overflow = "hidden";
+            }
+            
+            closeModal() {
+                this.elements.modal.style.display = "none";
+                document.body.style.overflow = "auto";
+            }
+        }
+        
+        // Инициализация приложения
+        document.addEventListener('DOMContentLoaded', () => {
+            window.vehiclesApp = new VehiclesApp();
+        });
+    </script>
+</body>
+</html>
